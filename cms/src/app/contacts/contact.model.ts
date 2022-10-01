@@ -5,6 +5,7 @@ export class Contact {
     public email: string;
     public phone: string;
     public imageUrl: string;
+    
 
     constructor(id: string, name: string, email: string, phone: string, imageUrl: string ){
        
