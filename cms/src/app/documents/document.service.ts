@@ -89,7 +89,7 @@ export class DocumentService {
     if (pos < 0) return;
 
     newDocument.id = original.id;
-    //newDocument._id = original._id;
+    newDocument._id = original._id;
     this.http
       .put<{ message: string }>(
         'http://localhost:3000/documents/' + original.id,

@@ -6,14 +6,13 @@ import {EventEmitter,  Injectable} from '@angular/core';
     providedIn: 'root'
 })
   export class ContactService {
-     private contacts: Contact [] =[];
+     contacts: Contact [] =[];
      contactChangedEvent = new EventEmitter<Contact[]>();
      contactListChangedEvent = new Subject<Contact[]>();
      maxContactId: number;
 
 
      constructor(private http: HttpClient) {
-      this.getContacts();
       this.maxContactId = this.getMaxId();
     }
 
@@ -55,14 +54,11 @@ import {EventEmitter,  Injectable} from '@angular/core';
         });
     }
 
-     getContact(id: string): Contact| null{
-      for(let contact of this.contacts){
-        if(contact.id === id){
-          return contact;
-        }
-      }
-      return null;
-     } 
+    getContact(id: string): Contact {
+      return this.contacts.find(
+        (contact) => contact.id === id || contact._id === id
+      );
+    }
      
      deleteContact(contact: Contact) {
       if (!contact) return;
@@ -115,6 +111,7 @@ import {EventEmitter,  Injectable} from '@angular/core';
     if (pos < 0) return;
 
     newContact.id = original.id;
+    newContact._id = original._id;
     this.http
       .put<{ message: string }>(
         'http://localhost:3000/contacts/' + original.id,
