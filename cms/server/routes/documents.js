@@ -66,7 +66,7 @@ router.put("/:id", (req, res, next) => {
         });
     })
     .catch((error) => {
-      res.status(500).json({
+      res.status(404).json({
         message: "Document not found.",
         error: { document: "Document not found" },
       });
@@ -90,7 +90,7 @@ router.delete("/:id", (req, res, next) => {
         });
     })
     .catch((error) => {
-      res.status(500).json({
+      res.status(404).json({
         message: "Document not found.",
         error: { document: "Document not found" },
       });

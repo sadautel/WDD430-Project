@@ -1,15 +1,13 @@
-const express = require("express");
-const path = require("path");
-const http = require("http");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-const logger = require("morgan");
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-dotenv.config();
+var express = require("express");
+var path = require("path");
+var http = require("http");
+var bodyParser = require("body-parser");
+var cookieParser = require("cookie-parser");
+var logger = require("morgan");
+var mongoose = require('mongoose');
 
 // import the routing file to handle the default (index) route
-const index = require("./server/routes/app");
+var index = require("./server/routes/app");
 
 // ... ADD CODE TO IMPORT YOUR ROUTING FILES HERE ...
 const messageRoutes = require("./server/routes/messages");
@@ -55,23 +53,22 @@ app.use("/messages", messageRoutes);
 app.use("/contacts", contactRoutes);
 app.use("/documents", documentsRoutes);
 
-// establish a connection to the mongo database
-mongoose.connect(
-  process.env.MONGODB_URL,
-  { useNewUrlParser: true },
-  (err, res) => {
-    if (err) {
-      console.log("Connection failed: " + err);
-    } else {
-      console.log("Connected to database!");
-    }
-  }
-);
-
 // Tell express to map all other non-defined routes back to the index page
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "dist/cms/index.html"));
 });
+
+// establish a connection to the mongo database
+mongoose.connect('mongodb://localhost:27017/cms',
+   { useNewUrlParser: true }, (err, res) => {
+      if (err) {
+         console.log('Connection failed: ' + err);
+      }
+      else {
+         console.log('Connected to database!');
+      }
+   }
+);
 
 // Define the port address and tell express to use this port
 const port = process.env.PORT || "3000";
