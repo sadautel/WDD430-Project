@@ -20,7 +20,7 @@ export class DocumentService {
   }
 
   getDocuments() {
-    this.http.get('https://wdd430cms-91f1e-default-rtdb.firebaseio.com/documents.json')
+    this.http.get('http://localhost:3000/documents')
       .subscribe(
         // success method
         (documents: Document[]) => {
@@ -98,7 +98,7 @@ export class DocumentService {
       'Content-Type': 'application/json'
     });
   
-    this.http.put('https://wdd430cms-91f1e-default-rtdb.firebaseio.com/documents.json', documents, { headers: headers })
+    this.http.put('http://localhost:3000/documents', documents, { headers: headers })
       .subscribe(
         () => {
           this.documentListChangedEvent.next(this.documents.slice());

@@ -17,7 +17,7 @@ export class MessageService {
   }
 
   getMessages() {
-    this.http.get('https://wdd430cms-91f1e-default-rtdb.firebaseio.com/messages.json')
+    this.http.get('http://localhost:3000/messages')
 
     .subscribe(
       // success method
@@ -66,7 +66,7 @@ export class MessageService {
       'Content-Type': 'application/json'
     });
 
-    this.http.put('https://wdd430cms-91f1e-default-rtdb.firebaseio.com/messages.json', messages, { headers: headers })
+    this.http.put('http://localhost:3000/messages', messages, { headers: headers })
       .subscribe(
         () => {
           this.messageChangedEvent.next(this.messages.slice());

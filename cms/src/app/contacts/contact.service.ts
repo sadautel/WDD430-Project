@@ -18,21 +18,28 @@ import {EventEmitter,  Injectable} from '@angular/core';
       this.maxContactId = this.getMaxId();
     }
 
-    getContacts() {
-      this.http.get('https://wdd430cms-91f1e-default-rtdb.firebaseio.com/contacts.json')
-        .subscribe(
-          // success method
-          (contacts: Contact[]) => {
-            this.contacts = contacts;
-            this.maxContactId = this.getMaxId();
-            this.contacts.sort((a, b) => (a.name < b.name) ? 1 : (a.name > b.name) ? -1 : 0)
-            this.contactListChangedEvent.next(this.contacts.slice());
-          },
-          // error method
-          (error: any) => {
-            console.log(error);
-          }
+    getContacts(): Contact[] {
+      this.http
+        .get<{ message: string; contacts: Contact[] }>(
+          'http://localhost:3000/contacts'
         )
+        .subscribe((responseData) => {
+          this.contacts = responseData.contacts;
+          this.contacts.sort((a, b) => {
+            if (a.name > b.name) {
+              return 1;
+            }
+            if (a.name < b.name) {
+              return -1;
+            }
+            return 0;
+          });
+          this.contactListChangedEvent.next(this.contacts.slice());
+        }),
+        (error: any) => {
+          console.log(error);
+        };
+      return this.contacts;
     }
 
      getContact(id: string): Contact| null{
@@ -98,7 +105,7 @@ import {EventEmitter,  Injectable} from '@angular/core';
         'Content-Type': 'application/json'
       });
   
-      this.http.put('https://wdd430cms-91f1e-default-rtdb.firebaseio.com/contacts.json', contacts, { headers: headers })
+      this.http.put('http://localhost:3000/contacts/', contacts, { headers: headers })
         .subscribe( () => {
             this.contactListChangedEvent.next(this.contacts.slice());
           }
